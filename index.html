@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esthetic Quiz | Descubra seu Protocolo</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Sua Jornada de Beleza</h1>
+            <p>Responda 3 perguntas e descubra o procedimento ideal para você.</p>
+        </header>
+
+        <div id="quiz">
+            <div class="question active" id="q1">
+                <h3>O que mais te incomoda hoje?</h3>
+                <button onclick="nextStep('q1', 'q2', 'linhas')">Linhas de expressão</button>
+                <button onclick="nextStep('q1', 'q2', 'flacidez')">Flacidez ou contorno</button>
+                <button onclick="nextStep('q1', 'q2', 'manchas')">Manchas ou textura</button>
+            </div>
+
+            <div class="question" id="q2">
+                <h3>Qual sua prioridade de resultado?</h3>
+                <button onclick="nextStep('q2', 'result', 'imediato')">Resultado imediato</button>
+                <button onclick="nextStep('q2', 'result', 'gradual')">Tratamento a longo prazo</button>
+            </div>
+
+            <div class="question" id="result">
+                <h2>Seu Protocolo Sugerido:</h2>
+                <div id="recommendation" class="highlight"></div>
+                <button onclick="location.reload()">Refazer Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+:root {
+    --primary: #d4af37; /* Dourado */
+    --bg: #faf9f6;      /* Off-white */
+    --text: #4a4a4a;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+h1 { font-weight: 500; color: var(--primary); letter-spacing: 1px; }
+
+.question { display: none; }
+.question.active { display: block; animation: fadeIn 0.5s ease; }
+
+button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #eee;
+    background: white;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+button:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.highlight {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: var(--primary);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+let choices = {};
+
+function nextStep(currentId, nextId, choiceValue) {
+    // Salva a escolha (opcional se quiser lógica complexa depois)
+    choices[currentId] = choiceValue;
+
+    // Esconde a atual e mostra a próxima
+    document.getElementById(currentId).classList.remove('active');
+    document.getElementById(nextId).classList.add('active');
+
+    if (nextId === 'result') {
+        showResult();
+    }
+}
+
+function showResult() {
+    const recDiv = document.getElementById('recommendation');
+    
+    // Lógica simples de recomendação
+    if (choices['q1'] === 'linhas') {
+        recDiv.innerHTML = "✨ Toxina Botulínica (Botox)";
+    } else if (choices['q1'] === 'flacidez') {
+        recDiv.innerHTML = "💎 Bioestimuladores de Colágeno ou Ultraformer";
+    } else {
+        recDiv.innerHTML = "🧴 Peeling Químico ou Microagulhamento";
+    }
+}
